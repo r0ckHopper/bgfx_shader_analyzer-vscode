@@ -22,25 +22,25 @@ let config: vscode.WorkspaceConfiguration;
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
-	config = vscode.workspace.getConfiguration("glsl-analyzer", { languageId: 'glsl' });
+	config = vscode.workspace.getConfiguration("bgfx-shader-analyzer", { languageId: 'bgfx-shader' });
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('glsl-analyzer.restartClient', () => startClient(context)),
+		vscode.commands.registerCommand('bgfx-shader-analyzer.restartClient', () => startClient(context)),
 	);
 	context.subscriptions.push(
-		vscode.commands.registerCommand('glsl-analyzer.stopClient', () => stopClient()),
+		vscode.commands.registerCommand('bgfx-shader-analyzer.stopClient', () => stopClient()),
 	);
 	context.subscriptions.push(
-		vscode.commands.registerCommand('glsl-analyzer.download', async () => {
+		vscode.commands.registerCommand('bgfx-shader-analyzer.download', async () => {
 			await stopClient();
 			await downloadLatestRelease(context);
-			vscode.window.showInformationMessage('updated to glsl_analyzer version: ' + getVersionString());
+			vscode.window.showInformationMessage('updated to bgfx_shader_analyzer version: ' + getVersionString());
 			await startClient(context);
 		}),
 	);
 	context.subscriptions.push(
-		vscode.commands.registerCommand('glsl-analyzer.version', () => {
-			vscode.window.showInformationMessage('glsl_analyzer version: ' + getVersionString());
+		vscode.commands.registerCommand('bgfx-shader-analyzer.version', () => {
+			vscode.window.showInformationMessage('bgfx_shader_analyzer version: ' + getVersionString());
 		}),
 	);
 
@@ -67,7 +67,7 @@ async function startClient(context: vscode.ExtensionContext) {
 
 	let client_options: LanguageClientOptions = {
 		documentSelector: [
-			{ scheme: 'file', language: 'glsl' }
+			{ scheme: 'file', language: 'bgfx-shader' }
 		]
 	};
 	let executable: Executable = {
@@ -75,20 +75,20 @@ async function startClient(context: vscode.ExtensionContext) {
 		transport: TransportKind.stdio,
 	};
 	let server_options: ServerOptions = executable;
-	let tmp_client = new LanguageClient("glsl_analyzer", server_options, client_options);
+	let tmp_client = new LanguageClient("bgfx_shader_analyzer", server_options, client_options);
 	await tmp_client.start();
 	client = tmp_client;
-	vscode.window.showInformationMessage("started glsl_analyzer!");
+	vscode.window.showInformationMessage("started bgfx_shader_analyzer!");
 }
 
 async function stopClient() {
 	if (!client) return;
-	vscode.window.showInformationMessage("stopping glsl_analyzer...");
+	vscode.window.showInformationMessage("stopping bgfx_shader_analyzer...");
 	await client.stop();
 	client = null;
 }
 
-const github_repo_url = "https://github.com/nolanderc/glsl_analyzer"
+const github_repo_url = "https://github.com/r0ckHopper/bgfx_shader_analyzer"
 
 async function downloadLatestRelease(context: vscode.ExtensionContext): Promise<vscode.Uri | null> {
 	const target = getDefaultTargetName();
@@ -101,7 +101,7 @@ async function downloadLatestRelease(context: vscode.ExtensionContext): Promise<
 	}
 
 	return await vscode.window.withProgress({
-		title: "Installing glsl_analyzer...",
+		title: "Installing bgfx_shader_analyzer...",
 		location: vscode.ProgressLocation.Notification,
 	}, async progress => {
 		const url = `${github_repo_url}/releases/latest/download/${target}.zip`;
@@ -149,11 +149,11 @@ function getExecutablePath(context: vscode.ExtensionContext): vscode.Uri {
 
 function getExecutableName(): string {
 	const extension = process.platform == 'win32' ? '.exe' : '';
-	return "glsl_analyzer" + extension;
+	return "bgfx_shader_analyzer" + extension;
 }
 
 function getInstallDirectory(context: vscode.ExtensionContext): vscode.Uri {
-	return vscode.Uri.joinPath(context.globalStorageUri, "glsl_analyzer_install");
+	return vscode.Uri.joinPath(context.globalStorageUri, "bgfx_shader_analyzer_install");
 }
 
 function getDefaultTargetName(): string | null {

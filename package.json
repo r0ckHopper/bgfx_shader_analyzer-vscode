@@ -1,17 +1,16 @@
 {
-  "name": "glsl-analyzer",
-  "displayName": "glsl_analyzer",
-  "description": "Completion, goto-definition, inline documentation and formatter for GLSL (OpenGL Shading Language).",
+  "name": "bgfx-shader-analyzer",
+  "displayName": "bgfx_shader_analyzer",
+  "description": "Completion, goto-definition, inline documentation and formatter for bgfx shader files (.sc).",
   "repository": {
-    "url": "https://github.com/nolanderc/glsl_analyzer-vscode"
+    "url": "https://github.com/r0ckHopper/bgfx_shader_analyzer-vscode"
   },
-  "publisher": "nolanderc",
+  "publisher": "Rockhopper",
   "author": {
-    "name": "Christofer Nolander",
-    "email": "christofer@nolander.me",
-    "url": "https://github.com/nolanderc"
+    "name": "RockHopper",
+    "url": "https://github.com/r0ckHopper"
   },
-  "version": "1.3.0",
+  "version": "0.1.0",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.83.0"
@@ -20,26 +19,27 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:glsl"
+    "onLanguage:bgfx-shader"
   ],
   "main": "./out/main.js",
   "keywords": [
     "language server",
     "completion",
     "documentation",
-    "glsl",
-    "shader"
+    "bgfx",
+    "shader",
+    "sc"
   ],
   "contributes": {
     "languages": [
       {
-        "id": "glsl",
+        "id": "bgfx-shader",
         "aliases": [
-          "OpenGL Shading Language",
-          "GLSL",
-          "glsl"
+          "bgfx Shader",
+          "bgfx-shader"
         ],
         "extensions": [
+          ".sc",
           ".glsl",
           ".vert",
           ".frag",
@@ -68,29 +68,29 @@
     ],
     "commands": [
       {
-        "command": "glsl-analyzer.stopClient",
-        "title": "GLSL: Stop glsl_analyzer"
+        "command": "bgfx-shader-analyzer.stopClient",
+        "title": "bgfx: Stop bgfx_shader_analyzer"
       },
       {
-        "command": "glsl-analyzer.restartClient",
-        "title": "GLSL: Restart glsl_analyzer"
+        "command": "bgfx-shader-analyzer.restartClient",
+        "title": "bgfx: Restart bgfx_shader_analyzer"
       },
       {
-        "command": "glsl-analyzer.download",
-        "title": "GLSL: Download latest glsl_analyzer"
+        "command": "bgfx-shader-analyzer.download",
+        "title": "bgfx: Download latest bgfx_shader_analyzer"
       },
       {
-        "command": "glsl-analyzer.version",
-        "title": "GLSL: Get version of glsl_analyzer"
+        "command": "bgfx-shader-analyzer.version",
+        "title": "bgfx: Get version of bgfx_shader_analyzer"
       }
     ],
     "configuration": {
-      "title": "glsl_analyzer",
+      "title": "bgfx_shader_analyzer",
       "properties": {
-        "glsl-analyzer.path": {
+        "bgfx-shader-analyzer.path": {
           "scope": "machine",
           "type": "string",
-          "description": "Path to the `glsl_analyzer` executable.",
+          "description": "Path to the `bgfx_shader_analyzer` executable.",
           "format": "path"
         }
       }
