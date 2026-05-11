@@ -35,4 +35,4 @@ the location of your executable.
 
 ## Experimental
 
-This extension is experimental. Expect false positives on bgfx-specific preprocessor directives and macros. Report issues at [GitHub](https://github.com/r0ckHopper/bgfx_shader_analyzer-vscode/issues).
+This extension is experimental. Expect false positives on bgfx-specific preprocessor directives and macros. Report issues at [GitHub](https://github.com/r0ckHopper/bgfx_shader_analyzer/issues).
