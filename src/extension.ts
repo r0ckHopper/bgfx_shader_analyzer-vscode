@@ -59,7 +59,15 @@ async function startClient(context: vscode.ExtensionContext) {
 	}
 
 	var executable_path: string | undefined = config.get('path');
-	if (!executable_path) {
+	console.log('[bgfx] configured path:', executable_path);
+	if (executable_path) {
+		console.log('[bgfx] file exists at path:', fs.existsSync(executable_path));
+	}
+	if (!executable_path || !fs.existsSync(executable_path)) {
+		if (executable_path) {
+			console.log('[bgfx] path set but file missing, clearing and re-downloading');
+			await config.update('path', undefined, true);
+		}
 		const downloaded_path = await downloadLatestRelease(context);
 		if (!downloaded_path) return;
 		executable_path = downloaded_path.fsPath;
@@ -111,6 +119,7 @@ async function downloadLatestRelease(context: vscode.ExtensionContext): Promise<
 		const archive_bytes = (await axios.get(url, {
 			responseType: 'arraybuffer',
 		})).data;
+		console.log('[bgfx] archive size:', archive_bytes.length);
 
 		progress.report({ message: "Extracting archive..." });
 		const install_directory = getInstallDirectory(context);
@@ -122,6 +131,8 @@ async function downloadLatestRelease(context: vscode.ExtensionContext): Promise<
 
 		var zip = new AdmZip(archive_bytes);
 		zip.extractAllTo(download_directory, true);
+		console.log('[bgfx] extracted to:', download_directory);
+		console.log('[bgfx] bin dir contents:', fs.readdirSync(download_directory + '/bin'));
 
 		progress.report({ message: "Installing..." });
 		fs.chmodSync(download_directory + '/bin/' + getExecutableName(), 0o755);
@@ -129,8 +140,11 @@ async function downloadLatestRelease(context: vscode.ExtensionContext): Promise<
 			fs.rmSync(install_directory.fsPath, { recursive: true, force: true });
 		}
 		fs.renameSync(download_directory, install_directory.fsPath);
+		console.log('[bgfx] install dir exists:', fs.existsSync(install_directory.fsPath));
 
 		const exe_path = getExecutablePath(context);
+		console.log('[bgfx] exe exists:', fs.existsSync(exe_path.fsPath));
+		console.log('[bgfx] exe path:', exe_path.fsPath);
 		if (!fs.existsSync(exe_path.fsPath)) {
 			vscode.window.showErrorMessage("Installation failed");
 			return null;
